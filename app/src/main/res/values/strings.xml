@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Embra Player</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_launcher">Launcher</string>
+</resources>
+
