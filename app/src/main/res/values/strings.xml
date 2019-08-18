@@ -5,5 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_launcher">Launcher</string>
+    <string name="app_pub">ca-app-pub-5001901450442767~9402918003</string>
+    <string name="ad_unit">ca-app-pub-5001901450442767/9049007865</string>
 </resources>
 

@@ -65,6 +65,7 @@ public class Launcher extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 pathArrList.add(cursor.getString(0));
                 //Log.d(TAG, cursor.getString(0));
+                if (pathArrList.size() >= 20) break;
             }
             cursor.close();
         }
