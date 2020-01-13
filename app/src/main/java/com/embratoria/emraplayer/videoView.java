@@ -7,20 +7,20 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
-import com.devbrackets.android.exomedia.ui.widget.VideoControlsCore;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-
+import com.google.android.gms.ads.formats.NativeAdOptions;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
 
 
 public class videoView extends AppCompatActivity {
@@ -29,7 +29,6 @@ public class videoView extends AppCompatActivity {
     private static final String TAG = "VIDEOVIEW";
     String hls_url = "https://aja-hd-web-hls-live.secure.footprint.net/egress/chandler/aljazeera2/arabichd/index5000.m3u8";
 
-    //String hls_url = "https://youtu.be/xbxDuKqV61Y";
 
     VideoView videoView;
     ImageView play, fullscreen;
@@ -62,46 +61,26 @@ public class videoView extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.full_screen);
-        MobileAds.initialize(this,
-                getString(R.string.app_pub));
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.ad_unit));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAd.setAdListener(new AdListener(){
-
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-            }
-        });
+        setupAdsInterstitial();
+        setupNativeAds();
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
 
         if (Intent.ACTION_VIEW.equals(action) && type != null) {
-            if (type.indexOf("video/*") != -1)
-            {
+            if (type.indexOf("video/*") != -1) {
                 //Log.d(TAG, "onCreate: "+);
                 hls_url = intent.getData().toString();
                 init(true);
             }
-        }
-        else if (type != null && type.equals("localfile"))
-        {
+        } else if (type != null && type.equals("localfile")) {
             hls_url = intent.getExtras().getString("filepath");
             init(true);
-        }
-        else if (action.equals("play_stream_from_ea"))
-        {
+        } else if (action.equals("play_stream_from_ea")) {
             hls_url = intent.getStringExtra("streamurl");
             init(false);
-        }
-        else {
-                init(false);
+        } else {
+            init(false);
         }
 
 
@@ -110,8 +89,54 @@ public class videoView extends AppCompatActivity {
 
 
     }
-    private  void init(final boolean extern)
-    {
+
+    private void setupNativeAds() {
+
+        AdLoader adLoader = new AdLoader.Builder(getApplicationContext(), "ca-app-pub-3940256099942544/2247696110")
+                .forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+                    @Override
+                    public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                        // Show the ad.
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(int errorCode) {
+                        // Handle the failure by logging, altering the UI, and so on.
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build();
+
+
+    }
+
+    private void setupAdsInterstitial() {
+
+        MobileAds.initialize(this,
+                getString(R.string.app_pub));
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.ad_unit));
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FC37FD7C069A7E0D49813CCCB95EF9F").build());
+
+        mInterstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("2FC37FD7C069A7E0D49813CCCB95EF9F").build());
+                setFullscreen(false);
+
+            }
+        });
+
+    }
+
+    private void init(final boolean extern) {
 
         videoView = findViewById(R.id.video_view);
         play = findViewById(R.id.play);
@@ -121,22 +146,14 @@ public class videoView extends AppCompatActivity {
         fullscreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (fullScreen) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    videoView.setMeasureBasedOnAspectRatioEnabled(true);
-                    videoView.setScaleType(ScaleType.NONE);
-                    fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
-                } else {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-                    if (!extern){
-                        videoView.setMeasureBasedOnAspectRatioEnabled(false);
-                        videoView.setScaleType(ScaleType.CENTER_CROP);
-                    }
-                    fullscreen.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp);
+                if(mInterstitialAd.isLoaded()){
+                    mInterstitialAd.show();
+                }else {
+                    setFullscreen(extern);
                 }
-                fullScreen = !fullScreen;
 
+
+               // setFullscreen(extern);
             }
         });
         play.setOnClickListener(new View.OnClickListener() {
@@ -145,9 +162,9 @@ public class videoView extends AppCompatActivity {
                 if (playPause) {
                     videoView.pause();
                     play.setImageResource(R.drawable.ic_play_arrow_black_24dp);
-                    if (mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                    }
+//                    if (mInterstitialAd.isLoaded()) {
+//                        mInterstitialAd.show();
+//                    }
                 } else {
                     videoView.setVideoURI(Uri.parse(hls_url));
                     play.setImageResource(R.drawable.ic_pause_black_24dp);
@@ -170,6 +187,24 @@ public class videoView extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setFullscreen(boolean extern) {
+        if (fullScreen) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            videoView.setMeasureBasedOnAspectRatioEnabled(true);
+            videoView.setScaleType(ScaleType.NONE);
+            fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+            if (!extern) {
+                videoView.setMeasureBasedOnAspectRatioEnabled(false);
+                videoView.setScaleType(ScaleType.CENTER_CROP);
+            }
+            fullscreen.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp);
+        }
+        fullScreen = !fullScreen;
     }
 
     @Override
