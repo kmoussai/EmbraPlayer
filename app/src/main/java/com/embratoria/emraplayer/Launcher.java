@@ -23,7 +23,7 @@ import org.json.JSONObject;
 public class Launcher extends AppCompatActivity {
 
 
-    private int versionCode = 0;
+    private int versionCode = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

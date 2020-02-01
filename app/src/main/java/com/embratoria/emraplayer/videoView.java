@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -188,21 +189,33 @@ public class videoView extends AppCompatActivity {
 
 
     }
+    ScaleType[] arr = {ScaleType.CENTER, ScaleType.CENTER_CROP, ScaleType.CENTER_INSIDE, ScaleType.FIT_CENTER, ScaleType.FIT_XY, ScaleType.NONE};
+    int position = 0;
+
+    public void changeScaleType(View view)
+    {
+
+        Log.d(TAG, "changeScaleType: " + position);
+        videoView.setScaleType(arr[position++ % arr.length]);
+        position %= 5;
+
+    }
 
     private void setFullscreen(boolean extern) {
         if (fullScreen) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             videoView.setMeasureBasedOnAspectRatioEnabled(true);
-            videoView.setScaleType(ScaleType.NONE);
+            //videoView.setScaleType(ScaleType.NONE);
             fullscreen.setImageResource(R.drawable.ic_fullscreen_black_24dp);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
             if (!extern) {
                 videoView.setMeasureBasedOnAspectRatioEnabled(false);
-                videoView.setScaleType(ScaleType.CENTER_CROP);
+                //videoView.setScaleType(ScaleType.CENTER_CROP);
             }
             fullscreen.setImageResource(R.drawable.ic_fullscreen_exit_black_24dp);
+            videoView.setVideoURI(Uri.parse(hls_url));
         }
         fullScreen = !fullScreen;
     }
