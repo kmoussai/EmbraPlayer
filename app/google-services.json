@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1052858485716",
-    "firebase_url": "https://emraplayer-e84ad.firebaseio.com",
-    "project_id": "emraplayer-e84ad",
-    "storage_bucket": "emraplayer-e84ad.appspot.com"
+    "project_number": "530797373955",
+    "firebase_url": "https://embraplayer.firebaseio.com",
+    "project_id": "embraplayer",
+    "storage_bucket": "embraplayer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1052858485716:android:0ff2c87f40373c19",
+        "mobilesdk_app_id": "1:530797373955:android:d05347951628a8fe52bc36",
         "android_client_info": {
           "package_name": "com.embratoria.emraplayer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1052858485716-llclc2cvh1rvb0u40raa17fbtgjp8l7o.apps.googleusercontent.com",
+          "client_id": "530797373955-gn1258hafbrggahj66jshvb7098qnnck.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.embratoria.emraplayer",
@@ -23,34 +23,25 @@
           }
         },
         {
-          "client_id": "1052858485716-qeo70l7r0sbrdpmhdjmlfsji6vc52vql.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.embratoria.emraplayer",
-            "certificate_hash": "def1a3f0e5cf21c3da8bef606d9fdbc8a03b5ecb"
-          }
-        },
-        {
-          "client_id": "1052858485716-qq9cr3roek33b3ksblg7g8o08je6uj03.apps.googleusercontent.com",
+          "client_id": "530797373955-sgecfqds3t9iioge5qafdinot8bc5tfv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBT7Rz-jPpLstCnKn7BdMma3Gjn5vaQLQ0"
+          "current_key": "AIzaSyD7ankhWdmLXgHSarr_OA23gNkxunZGBkA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1052858485716-qq9cr3roek33b3ksblg7g8o08je6uj03.apps.googleusercontent.com",
+              "client_id": "530797373955-sgecfqds3t9iioge5qafdinot8bc5tfv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      },
-      "admob_app_id": "ca-app-pub-5001901450442767~9402918003"
+      }
     }
   ],
   "configuration_version": "1"

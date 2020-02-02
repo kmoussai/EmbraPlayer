@@ -23,11 +23,18 @@ import org.json.JSONObject;
 public class Launcher extends AppCompatActivity {
 
 
-    private int versionCode = 3;
+    private int versionCode = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+             versionCode = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            versionCode = 5;
+        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
